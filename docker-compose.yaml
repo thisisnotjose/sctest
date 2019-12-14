@@ -1,0 +1,21 @@
+# FROM golang:1.8
+
+# WORKDIR /go/src/app
+# COPY . .
+
+# RUN go get -d -v ./...
+# RUN go install -v ./...
+
+# CMD ["app"]
+version: '3'
+
+services:
+  sctest:
+    image: golang:1.8
+    container_name: sctest
+    ports:
+      - "9090:9090"
+      - "9099:9099"
+    command: ["tail", "-f", "/dev/null"]
+    volumes:
+      - .:/go
