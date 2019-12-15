@@ -1,4 +1,4 @@
-# FROM golang:1.8
+# FROM golang:1.13
 
 # WORKDIR /go/src/app
 # COPY . .
@@ -11,11 +11,21 @@ version: '3'
 
 services:
   sctest:
-    image: golang:1.8
+    image: golang:1.13
     container_name: sctest
     ports:
       - "9090:9090"
       - "9099:9099"
     command: ["tail", "-f", "/dev/null"]
     volumes:
-      - .:/go
+      - .:/go/sctest
+
+# 30k 
+# real	0m0.714s
+# user	0m0.679s
+# sys	0m0.144s
+
+# 100k
+# real	0m1.104s
+# user	0m2.453s
+# sys	0m0.195s
