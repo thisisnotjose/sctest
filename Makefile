@@ -5,7 +5,7 @@ start: build
 
 build:
 	export GO111MODULE=on
-	env GOOS=linux go build -ldflags="-s -w" -o bin/main cmd/main.go
+	env go build -ldflags="-s -w" -o bin/main cmd/main.go
 
 clean:
 	rm -rf ./bin ./vendor
