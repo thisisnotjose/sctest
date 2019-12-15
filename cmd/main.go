@@ -27,9 +27,8 @@ func main() {
 	eventsServer := servers.NewEventsServer(handlers.NewEventsHandler(&ctx))
 	subscriptionServer := servers.NewSubscriptionServer(handlers.NewSubscriptionHandler(&ctx))
 
-	// you can also add these one at
-	// a time if you need to
-	wg.Add(2)
+	// We will have 3 go routines: Events Server, Subscription Server and the Events Processor
+	wg.Add(3)
 
 	go func() {
 		defer wg.Done()
