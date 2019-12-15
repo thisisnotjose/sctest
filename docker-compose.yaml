@@ -1,13 +1,4 @@
-# FROM golang:1.13
-
-# WORKDIR /go/src/app
-# COPY . .
-
-# RUN go get -d -v ./...
-# RUN go install -v ./...
-
-# CMD ["app"]
-version: '3'
+\version: '3'
 
 services:
   sctest:
@@ -19,13 +10,3 @@ services:
     command: ["tail", "-f", "/dev/null"]
     volumes:
       - .:/go/sctest
-
-# 30k 
-# real	0m0.714s
-# user	0m0.679s
-# sys	0m0.144s
-
-# 100k
-# real	0m1.104s
-# user	0m2.453s
-# sys	0m0.195s
