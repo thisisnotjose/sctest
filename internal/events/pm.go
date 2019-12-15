@@ -10,6 +10,5 @@ import (
 func ProcessPrivateMessage(ctx *types.Context, evt types.Event) {
 	if clientConn, ok := ctx.UsersPool[evt.ReceiverUserID]; ok {
 		fmt.Fprint(clientConn, evt.Payload)
-		fmt.Printf("NOTIFIED USER %v\n", evt.ReceiverUserID)
 	}
 }

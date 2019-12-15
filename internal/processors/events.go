@@ -1,8 +1,6 @@
 package processors
 
 import (
-	"fmt"
-
 	"github.com/thisisnotjose/sctest/internal/events"
 	"github.com/thisisnotjose/sctest/internal/types"
 )
@@ -55,5 +53,5 @@ func processEvent(ctx *types.Context, evt types.Event) {
 	case "S":
 		events.ProcessStatusUpdate(ctx, evt)
 	}
-	fmt.Printf("message processed: %+v\n", evt)
+	//fmt.Printf("message processed: %+v\n", evt)
 }
