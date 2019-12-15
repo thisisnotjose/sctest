@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  sctest:
+    image: golang:1.13
+    container_name: sctest
+    ports:
+      - "9090:9090"
+      - "9099:9099"
+    command: ["tail", "-f", "/dev/null"]
+    volumes:
+      - .:/go/sctest
