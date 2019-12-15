@@ -56,6 +56,7 @@ func eventsHandler(ctx *types.Context, conn types.Connection, message string) {
 		Payload:        message + "\n",
 	}
 
-	// Insert the event into the event queue
+	// Push the event to the channel it will get picked up
+	// by the event processor to be added to the events queue
 	ctx.EventChannel <- evt
 }
