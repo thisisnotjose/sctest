@@ -22,7 +22,7 @@ func main() {
 	go func() {
 		lastSeqNo := 0
 
-		eventListener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", eventPort))
+		eventListener, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", eventPort))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -151,7 +151,7 @@ func main() {
 		}
 	}()
 
-	eventListener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", clientPort))
+	eventListener, err := net.Listen("tcp", fmt.Sprintf(":%d", clientPort))
 	if err != nil {
 		log.Fatal(err)
 	}
