@@ -53,7 +53,7 @@ func operatorHandler(ctx *types.Context, conn types.Connection, message string) 
 		ReceiverUserID: receiverUserID,
 		EmitterUserID:  emitterUserID,
 		EventType:      eventType,
-		Payload:        message,
+		Payload:        message + "\n",
 	}
 
 	// Insert the event into the event queue
