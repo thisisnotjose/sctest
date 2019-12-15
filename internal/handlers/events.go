@@ -8,14 +8,14 @@ import (
 	"github.com/thisisnotjose/sctest/internal/types"
 )
 
-// NewOperatorHandler Registers a new user into the system
-func NewOperatorHandler(ctx *types.Context) types.Handler {
+// NewEventsHandler Registers a new user into the system
+func NewEventsHandler(ctx *types.Context) types.Handler {
 	return func(conn types.Connection, message string) {
-		operatorHandler(ctx, conn, message)
+		eventsHandler(ctx, conn, message)
 	}
 }
 
-func operatorHandler(ctx *types.Context, conn types.Connection, message string) {
+func eventsHandler(ctx *types.Context, conn types.Connection, message string) {
 	var err error
 	eventParts := strings.Split(message, "|")
 

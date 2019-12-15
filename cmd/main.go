@@ -24,7 +24,7 @@ func main() {
 		EventChannel:     make(chan types.Event, 100),
 	}
 
-	eventsServer := servers.NewEventsServer(handlers.NewOperatorHandler(&ctx))
+	eventsServer := servers.NewEventsServer(handlers.NewEventsHandler(&ctx))
 	subscriptionServer := servers.NewSubscriptionServer(handlers.NewSubscriptionHandler(&ctx))
 
 	// you can also add these one at
