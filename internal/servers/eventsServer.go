@@ -15,7 +15,8 @@ type eventsServer struct {
 	handler types.Handler
 }
 
-// NewEventsServer returns an instance of a server
+// NewEventsServer returns an instance of a server that closes the connection whenever
+// it stops receiving messages.
 func NewEventsServer(handler types.Handler) types.Server {
 	return eventsServer{
 		handler: handler,
