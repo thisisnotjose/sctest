@@ -71,3 +71,28 @@ Ideally the structure was changed in order to abstract the behaviour of the tech
 - **Decouple the event processor**: If we wanted to distribute this it could change the channel for a rabbitMQ queue and decouple the event processor into its own service.
 - **Abstract the logic for sending a client message**: There should a single piece of code that is used across the application to send a message to a client instead of making `fmt` calls in each event processor call.
 
+## Part 2
+
+The second part is mostly dedicated to the Dead Letter Queue implementation. Several modifications to the code were done in order to track and preserve the messages coming to the events queue that couldn't be processed for one or another reason. 
+
+### Approach
+
+The approach taken is inline with the event queue processing, a channel for the dead letter queue was created and a processor initiated when booting up the application, this processor waits for message strings coming into the queue (they needed to be strings and not event types because in several cases the string is malformed and cannot be unmarshalled) and then prints them out to the console.
+
+The idea of using a channel and moving this out of the logic of the main routine is to avoid spending time when processing events on processing dead letters, we should as much as possible be delegating that to another process and then using the data gathered in that other process to understand how is the usage of the events layer, are we missing an event? Are clients sending the payload formatted in a different way? Maybe setup a dashboard where we can look at the types of dead letters and which ones do we receive the most. 
+
+### Shortcuts and Design tradeoffs
+
+By adding another channel and another processor we are increasing the memory and decreasing the overall performance of the application(same resources shared by a bigger amount of routines), BUT, the big trade-off here is the ability to decouple this functionality in a clear way, you can just push the ma
+
+
+
+### Changes 
+
+- Added a `DeadLetter` channel to the context.
+- Whenever the message cannot be processed add it to the channel, this includes:
+  - When the event type is not recognized
+  - When the message cannot be parsed into an event object because of lack of pipes
+  - Or cannot be parsed because of letters where there should only be digits
+  - When the message could not be delivered to the user 
+- Added unit tests for the dead letter queue and some other scenarios related to the dead letter code.
