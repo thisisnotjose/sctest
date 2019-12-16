@@ -28,7 +28,7 @@ func main() {
 	eventsServer := servers.NewEventsServer(handlers.NewEventsHandler(&ctx))
 	subscriptionServer := servers.NewSubscriptionServer(handlers.NewSubscriptionHandler(&ctx))
 
-	// We will have 3 go routines: Events Server, Subscription Server and the Events Processor
+	// We will have 4 go routines: Events Server, Subscription Server, Events Processor and Dead Letters Processor
 	wg.Add(4)
 
 	go func() {
