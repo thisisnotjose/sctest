@@ -16,7 +16,7 @@ func NewDeadLettersProcessor(ctx *types.Context) types.Processor {
 	return deadlettersProcessor{
 		ctx: ctx,
 		printDL: func(v string) {
-			fmt.Printf("DEAD LETTER EVENT %v", v)
+			fmt.Printf("Dead letter event %v", v)
 		},
 	}
 }
