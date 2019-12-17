@@ -76,7 +76,6 @@ Ideally the structure was changed in order to abstract the behaviour of the tech
 - **Logging**: Although there is logging in the application, the use of LEVEL(INFO, DEBUG, WARN, ERR) logging would be great.
 - **Environments**: The use of environment to define basic behaviour and/or configurations of the app, as is the use of environment variables to load things like the ports.
 - **Persistence**: It would be valuable to move things like the follow registry to an actual persisted layer, like Redis or Mongo or Postgres. Depends a lot of the production requirements or expected usage.
-- **Persistence**: It would be valuable to move things like the follow registry to an actual persisted layer, like Redis or Mongo or Postgres. Depends a lot of the production requirements or expected usage.
 - **Use more than one process**: For this we could set `GOMAXPROCS` to the number of go routines we have and it would allow every go routine to take advantage of using its own processing unit. The only thing that we would need to do is make the `context` thread safe.
 - **Decouple the processors**: If we wanted to distribute this it could change the channel for a rabbitMQ queue and decouple the event processor into its own service.
 - **Abstract the logic for sending a client message**: There should a single piece of code that is used across the application to send a message to a client instead of making `fmt` calls in each event processor call.
