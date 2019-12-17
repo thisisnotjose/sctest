@@ -15,9 +15,14 @@ func SendEventToUser(ctx *types.Context, userID int, evt types.Event) {
 		_, err = fmt.Fprint(clientConn, evt.Payload)
 	}
 
-	if !ok || err != nil {
-		fmt.Println(err)
-		// If the user is not connected or we couldn't send the payload, send it to the dead letter queue instead
+	// If the user is not connected send it to the dead letter queue instead
+	if !ok {
+		ctx.DeadLetterChannel <- evt.Payload
+	}
+
+	// If we couldn't send the payload, send it to the dead letter queue instead
+	if err != nil {
+		fmt.Printf("Could not send message to user: %d error: %v", userID, err)
 		ctx.DeadLetterChannel <- evt.Payload
 	}
 }
@@ -25,11 +30,12 @@ func SendEventToUser(ctx *types.Context, userID int, evt types.Event) {
 // SendEventToAllUsers sends an event payload to all users in the usersPool
 func SendEventToAllUsers(ctx *types.Context, evt types.Event) {
 	// If the event is sent to all users don't register the missing events to the dead queue.
-	for _, clientConn := range ctx.UsersPool {
+	for userID, clientConn := range ctx.UsersPool {
 		_, err := fmt.Fprint(clientConn, evt.Payload)
+
+		// If we couldn't send the payload, send it to the dead letter queue instead
 		if err != nil {
-			fmt.Println(err)
-			// If the user is not connected we send the payload to the dead letter queue
+			fmt.Printf("Could not send message to user: %d error: %v", userID, err)
 			ctx.DeadLetterChannel <- evt.Payload
 		}
 	}
