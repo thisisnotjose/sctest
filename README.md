@@ -10,10 +10,18 @@ In order to execute the program you can do:
 $ make start
 ```
 
-Or if you want to use dockerq
+Or if you want to use docker
 
 ```
 $ docker-compose up
+```
+
+## Testing 
+
+To test the application you can do
+
+```
+$ make test
 ```
 
 ## Part 1
@@ -101,7 +109,7 @@ The solution also creates the `users` package and moves the functionality of sen
 
 Another shortcut was that for `broadcast` I'm not adding the messages to the deadletter queue. I could easily add that, but (and this would be something I would ask the product manager) it seems like broadcast is oriented to all `connected` users and not to all users, so there aren't any dead letters in that sense.
 
-And last but not least, I'm not logging the error when a message could not be written to a TCP connection, its put into the dead letter queue but not logged or passed to the queue. 
+And last but not least, when failing to write to a TCP connection of a user I'm not sending the error to the dead letter queue, I'm just logging it, ideally I would put them together to also give context of why the event is inside the dead letter queue. 
 
 ### Changes 
 
