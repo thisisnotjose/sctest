@@ -12,5 +12,8 @@ clean:
 
 test:
 	GO111MODULE=on go test -timeout 30s \
-	github.com/thisisnotjose/sctest/ \
+	github.com/thisisnotjose/sctest/cmd/ \
+	github.com/thisisnotjose/sctest/internal/processors/ \
+	github.com/thisisnotjose/sctest/internal/users/ \
+	github.com/thisisnotjose/sctest/internal/handlers/ \
 	-coverprofile=/tmp/code-cover

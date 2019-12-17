@@ -1,6 +1,6 @@
 # Follower-Maze Solution
 
-This is a solution of the follower-maze challenge provided by `SoundCloud` implemented in `Go`. If you need information on the specifications of the challenge please go to the [instructions](docs/instructions.md)
+This is a solution of the follower-maze challenge provided by `SoundCloud` implemented in `Go`. If you need information on the specifications of the challenge please go to the [instructions](./docs/instructions.md)
 
 ## Getting Started
 
@@ -10,10 +10,18 @@ In order to execute the program you can do:
 $ make start
 ```
 
-Or if you want to use dockerq
+Or if you want to use docker
 
 ```
 $ docker-compose up
+```
+
+## Testing 
+
+To test the application you can do
+
+```
+$ make test
 ```
 
 ## Part 1
@@ -64,10 +72,53 @@ Ideally the structure was changed in order to abstract the behaviour of the tech
 
 #### Possible Improvements
 
-- **Unit tests**: Tests are still not in the code, but the different components should make it easy to mock any dependencies and test the smallest ammounts of code possible at a time.
+- **Unit tests**: Tests are still not in the code, but the different components should make it easy to mock any dependencies and test the smallest ammounts of code possible at a time. Also it would be great to add tests to the overall functionality and not just the modules, meaning having tests that boot the application up and then mock the clients, connections and requests done to the service.
 - **Logging**: Although there is logging in the application, the use of LEVEL(INFO, DEBUG, WARN, ERR) logging would be great.
 - **Environments**: The use of environment to define basic behaviour and/or configurations of the app, as is the use of environment variables to load things like the ports.
 - **Persistence**: It would be valuable to move things like the follow registry to an actual persisted layer, like Redis or Mongo or Postgres. Depends a lot of the production requirements or expected usage.
-- **Decouple the event processor**: If we wanted to distribute this it could change the channel for a rabbitMQ queue and decouple the event processor into its own service.
+- **Persistence**: It would be valuable to move things like the follow registry to an actual persisted layer, like Redis or Mongo or Postgres. Depends a lot of the production requirements or expected usage.
+- **Use more than one process**: For this we could set `GOMAXPROCS` to the number of go routines we have and it would allow every go routine to take advantage of using its own processing unit. The only thing that we would need to do is make the `context` thread safe.
+- **Decouple the processors**: If we wanted to distribute this it could change the channel for a rabbitMQ queue and decouple the event processor into its own service.
 - **Abstract the logic for sending a client message**: There should a single piece of code that is used across the application to send a message to a client instead of making `fmt` calls in each event processor call.
+- **Dockerize the application**: This can be done with minimal amount of work and it could simplify the way its deployed and tested.
 
+## Part 2
+
+The second part is mostly dedicated to the Dead Letter Queue implementation. Several modifications to the code were done in order to track and preserve the messages coming to the events queue that couldn't be processed for one or another reason. 
+
+### Approach
+
+The approach taken is inline with the event queue processing, a channel for the dead letter queue was created and a processor initiated when booting up the application, this processor waits for message strings coming into the queue (they needed to be strings and not event types because in several cases the string is malformed and cannot be unmarshalled) and then prints them out to the console.
+
+The idea of using a channel and moving this out of the logic of the main routine is to avoid spending time when processing events on processing dead letters, we should as much as possible be delegating that to another process and then using the data gathered in that other process to understand how is the usage of the events layer.
+
+
+# DLQ Treatment
+
+There are several actions we can take with this queue:
+
+- Setup a dashboard that shows the dead letter count over time, the types of dead letters and their count (malformed, incomplete, no user connected) 
+- Depending on the context it might be valuable to setup some alarms like "if we receive more than 5 dead letters in an hour trigger alarm" or "if we receive a malformed dead letter raise an alarm"
+- Do a weekly report where it shows the dead letter count per application, that way its visible to other developers because they might have a bug and not be aware of it.
+- If there are too many dead letters for unconnected users we should evaluate the code, are we storing the connections correctly? Are we taking too much or taking to little time to send the notification back? Does it even make sense to store this type of exceptions on dead letter queues? 
+
+### Shortcuts and Design tradeoffs
+
+By adding another channel and another processor we are increasing the memory and decreasing the overall performance of the application(same resources shared by a bigger amount of routines), BUT, the big trade-off here is the ability to decouple this functionality in a clear way, which would start by moving the channels to some type of message queue and moving the code of the processors into their own services.
+
+The solution also creates the `users` package and moves the functionality of sending of the events to other users to that package, however, because of time constraints I didn't move the follow/unfollow behavior to that package even though they belong there. 
+
+Another shortcut was that for `broadcast` I'm not adding the messages to the deadletter queue. I could easily add that, but (and this would be something I would ask the product manager) it seems like broadcast is oriented to all `connected` users and not to all users, so there aren't any dead letters in that sense.
+
+And last but not least, when failing to write to a TCP connection of a user I'm not sending the error to the dead letter queue, I'm just logging it, ideally I would put them together to also give context of why the event is inside the dead letter queue. 
+
+### Changes 
+
+- Added a `DeadLetter` channel to the context.
+- Whenever the message cannot be processed add it to the channel, this includes:
+  - When the event type is not recognized
+  - When the message cannot be parsed into an event object because of lack of pipes
+  - Or cannot be parsed because of letters where there should only be digits
+  - When the message could not be delivered to the user
+- Added unit tests for the dead letter queue and some other scenarios related to the dead letter code.
+- Added the `users` package with methods on how to send events to users. 

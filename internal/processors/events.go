@@ -56,6 +56,8 @@ func processEvent(ctx *types.Context, evt types.Event) {
 		events.ProcessBroadcast(ctx, evt)
 	case "S":
 		events.ProcessStatusUpdate(ctx, evt)
+	default:
+		events.ProcessDeadLetter(ctx, evt.Payload)
 	}
 	//fmt.Printf("message processed: %+v\n", evt)
 }

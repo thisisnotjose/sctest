@@ -25,12 +25,13 @@ type Handler func(conn Connection, message string)
 
 // Context is the current context of the application
 type Context struct {
-	SubscriptionPort int
-	EventsPort       int
-	UsersPool        map[int]Connection
-	FollowRegistry   map[int]map[int]bool // The follower-subscriber data table
-	EventQueue       map[int]Event
-	EventChannel     chan Event // A ordered array of events
+	SubscriptionPort  int
+	EventsPort        int
+	UsersPool         map[int]Connection
+	FollowRegistry    map[int]map[int]bool // The follower-subscriber data table
+	EventQueue        map[int]Event
+	EventChannel      chan Event  // A ordered array of events,
+	DeadLetterChannel chan string // A ordered array of events that couldn't be processed,
 }
 
 // Event holds the basic format of a follower maze event

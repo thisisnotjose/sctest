@@ -1,9 +1,8 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnotjose/sctest/internal/users"
 )
 
 // ProcessFollow Adds the relationship of the users in the follow registry
@@ -17,8 +16,5 @@ func ProcessFollow(ctx *types.Context, evt types.Event) {
 	followers, _ := ctx.FollowRegistry[evt.ReceiverUserID]
 	followers[evt.EmitterUserID] = true
 
-	clientConn, ok := ctx.UsersPool[evt.ReceiverUserID]
-	if ok {
-		fmt.Fprint(clientConn, evt.Payload)
-	}
+	users.SendEventToUser(ctx, evt.ReceiverUserID, evt)
 }
