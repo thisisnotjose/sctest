@@ -97,7 +97,7 @@ The approach taken is inline with the event queue processing, a channel for the 
 The idea of using a channel and moving this out of the logic of the main routine is to avoid spending time when processing events on processing dead letters, we should as much as possible be delegating that to another process and then using the data gathered in that other process to understand how is the usage of the events layer.
 
 
-# DLQ Treatment
+### DLQ Treatment
 
 There are several actions we can take with this queue:
 
