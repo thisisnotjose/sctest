@@ -1,6 +1,6 @@
 # Follower-Maze Solution
 
-This is a solution of the follower-maze challenge provided by `SoundCloud` implemented in `Go`. If you need information on the specifications of the challenge please go to the [instructions](docs/instructions.md)
+This is a solution of the follower-maze challenge provided by `SoundCloud` implemented in `Go`. If you need information on the specifications of the challenge please go to the [instructions](./docs/instructions.md)
 
 ## Getting Started
 
@@ -81,6 +81,7 @@ Ideally the structure was changed in order to abstract the behaviour of the tech
 - **Decouple the processors**: If we wanted to distribute this it could change the channel for a rabbitMQ queue and decouple the event processor into its own service.
 - **Abstract the logic for sending a client message**: There should a single piece of code that is used across the application to send a message to a client instead of making `fmt` calls in each event processor call.
 - **Dockerize the application**: This can be done with minimal amount of work and it could simplify the way its deployed and tested.
+
 ## Part 2
 
 The second part is mostly dedicated to the Dead Letter Queue implementation. Several modifications to the code were done in order to track and preserve the messages coming to the events queue that couldn't be processed for one or another reason. 
