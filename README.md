@@ -24,7 +24,7 @@ To test the application you can do
 $ make test
 ```
 
-## Part 1
+## Part 1 (see [PR #1](https://github.com/thisisnotjose/sctest/pull/1))
 
 During this part the code was refactored in the following manner: 
 
@@ -82,7 +82,7 @@ Ideally the structure was changed in order to abstract the behaviour of the tech
 - **Abstract the logic for sending a client message**: There should a single piece of code that is used across the application to send a message to a client instead of making `fmt` calls in each event processor call.
 - **Dockerize the application**: This can be done with minimal amount of work and it could simplify the way its deployed and tested.
 
-## Part 2
+## Part 2 (see PR [PR #2](https://github.com/thisisnotjose/sctest/pull/2))
 
 The second part is mostly dedicated to the Dead Letter Queue implementation. Several modifications to the code were done in order to track and preserve the messages coming to the events queue that couldn't be processed for one or another reason. 
 
