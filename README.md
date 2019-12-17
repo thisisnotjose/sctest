@@ -24,6 +24,11 @@ To test the application you can do
 $ make test
 ```
 
+Or if you want to use docker
+```
+docker-compose run --rm sctest make test
+```
+
 ## Part 1 (see [PR #1](https://github.com/thisisnotjose/sctest/pull/1))
 
 During this part the code was refactored in the following manner: 
