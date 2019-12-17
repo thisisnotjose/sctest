@@ -9,11 +9,15 @@ import (
 // SendEventToUser sends the payload of an event to a user as long as the connection is in the usersPool
 // if not it sends the payload to the dead letter queue implementation
 func SendEventToUser(ctx *types.Context, userID int, evt types.Event) {
+	var err error = nil
 	clientConn, ok := ctx.UsersPool[userID]
 	if ok {
-		fmt.Fprint(clientConn, evt.Payload)
-	} else {
-		// If the user is not connected we send the payload to the dead letter queue
+		_, err = fmt.Fprint(clientConn, evt.Payload)
+	}
+
+	if !ok || err != nil {
+		fmt.Println(err)
+		// If the user is not connected or we couldn't send the payload, send it to the dead letter queue instead
 		ctx.DeadLetterChannel <- evt.Payload
 	}
 }
@@ -22,7 +26,12 @@ func SendEventToUser(ctx *types.Context, userID int, evt types.Event) {
 func SendEventToAllUsers(ctx *types.Context, evt types.Event) {
 	// If the event is sent to all users don't register the missing events to the dead queue.
 	for _, clientConn := range ctx.UsersPool {
-		fmt.Fprint(clientConn, evt.Payload)
+		_, err := fmt.Fprint(clientConn, evt.Payload)
+		if err != nil {
+			fmt.Println(err)
+			// If the user is not connected we send the payload to the dead letter queue
+			ctx.DeadLetterChannel <- evt.Payload
+		}
 	}
 }
 
