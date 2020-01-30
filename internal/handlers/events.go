@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/thisisnotjose/sctest/internal/events"
-	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/events"
+	"github.com/thisisnot/sctest/internal/types"
 )
 
 // NewEventsHandler Registers a new user into the system
@@ -23,13 +23,13 @@ func eventsHandler(ctx *types.Context, conn types.Connection, message string) {
 	sequenceNo, err := strconv.Atoi(eventParts[0])
 	if err != nil {
 		events.ProcessDeadLetter(ctx, message)
-		log.Printf("4Couldn't process message %v", message)
+		log.Printf("Couldn't process message %v", message)
 		return
 	}
 
 	if len(eventParts) < 1 {
 		events.ProcessDeadLetter(ctx, message)
-		log.Printf("3Couldn't process message %v", message)
+		log.Printf("Couldn't process message %v", message)
 		return
 	}
 
@@ -40,7 +40,7 @@ func eventsHandler(ctx *types.Context, conn types.Connection, message string) {
 		emitterUserID, err = strconv.Atoi(eventParts[2])
 		if err != nil {
 			events.ProcessDeadLetter(ctx, message)
-			log.Printf("2Couldn't process message %v", err)
+			log.Printf("Couldn't process message %v", err)
 			return
 		}
 	}
@@ -50,7 +50,7 @@ func eventsHandler(ctx *types.Context, conn types.Connection, message string) {
 		receiverUserID, err = strconv.Atoi(eventParts[3])
 		if err != nil {
 			events.ProcessDeadLetter(ctx, message)
-			log.Printf("1Couldn't process message %v", err)
+			log.Printf("Couldn't process message %v", err)
 			return
 		}
 	}

@@ -3,7 +3,7 @@ package processors
 import (
 	"fmt"
 
-	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/types"
 )
 
 type deadlettersProcessor struct {

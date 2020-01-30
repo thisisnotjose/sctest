@@ -3,7 +3,7 @@ package users
 import (
 	"fmt"
 
-	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/types"
 )
 
 // SendEventToUser sends the payload of an event to a user as long as the connection is in the usersPool

@@ -7,7 +7,7 @@ import (
 	"net"
 	"strings"
 
-	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/types"
 )
 
 type subscriptionServer struct {

@@ -1,8 +1,8 @@
 package processors
 
 import (
-	"github.com/thisisnotjose/sctest/internal/events"
-	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/events"
+	"github.com/thisisnot/sctest/internal/types"
 )
 
 type processor struct {

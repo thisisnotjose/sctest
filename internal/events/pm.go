@@ -1,8 +1,8 @@
 package events
 
 import (
-	"github.com/thisisnotjose/sctest/internal/types"
-	"github.com/thisisnotjose/sctest/internal/users"
+	"github.com/thisisnot/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/users"
 )
 
 // ProcessPrivateMessage Adds the relationship of the users in the follow registry

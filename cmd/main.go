@@ -3,10 +3,10 @@ package main
 import (
 	"sync"
 
-	"github.com/thisisnotjose/sctest/internal/handlers"
-	"github.com/thisisnotjose/sctest/internal/processors"
-	"github.com/thisisnotjose/sctest/internal/servers"
-	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/handlers"
+	"github.com/thisisnot/sctest/internal/processors"
+	"github.com/thisisnot/sctest/internal/servers"
+	"github.com/thisisnot/sctest/internal/types"
 )
 
 const eventPort = 9090

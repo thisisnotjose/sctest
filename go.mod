@@ -1,4 +1,4 @@
-module github.com/thisisnotjose/sctest
+module github.com/thisisnot/sctest
 
 go 1.13
 

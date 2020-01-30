@@ -9,6 +9,6 @@ services:
     ports:
       - "9090:9090"
       - "9099:9099"
-    command: ["make", "start"]
+    command: ["tail", "-f", "/dev/null"]
     volumes:
       - .:/go

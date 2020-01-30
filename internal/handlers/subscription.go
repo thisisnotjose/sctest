@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/thisisnotjose/sctest/internal/types"
+	"github.com/thisisnot/sctest/internal/types"
 )
 
 // NewSubscriptionHandler Registers a new user into the system
